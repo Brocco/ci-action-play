@@ -8,12 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm install
-      # - name: cache deps
-      #   uses: actions/cache/save@v3
-      #   id: deps_cache
-      #   with:
-      #     path: node_modules
-      #     key: run-deps-${{ github.run_id }}
+      - name: cache deps
+        uses: actions/cache/save@v3
+        id: deps_cache
+        with:
+          path: node_modules
+          key: run-deps-${{ github.run_id }}
 
   run:
     needs: install
@@ -22,8 +22,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      # - uses: actions/cache/restore@v3
-        # with:
-        #   path: node_modules
-        #   key: run-deps-${{ github.run_id }}
+      - name: restore deps cache
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: run-deps-${{ github.run_id }}
       - run: npm run build && npm start
