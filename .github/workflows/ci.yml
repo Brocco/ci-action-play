@@ -48,6 +48,6 @@ jobs:
       - name: restore output cache
         uses: actions/cache/restore@v3
         with:
-          path: node_modules
+          path: dist
           key: dist-${{ github.run_id }}
       - run: npm run verify
