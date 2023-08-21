@@ -1,5 +1,5 @@
 name: Continuous Integration Playground
-run-name: ${{ github.actor }} pushed ${{ github.ref }} - ${{ github.event.head_commit.message }}
+run-name: ${{ github.actor }} pushed ${{ github.ref_name }} - ${{ github.event.head_commit.message }}
 on: [push]
 jobs:
   install:
@@ -12,7 +12,7 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: node_modules
-          key: deps-${{ github.head_ref }}-${{ github.run_id }}
+          key: deps-${{ .Branch }}-${{ github.run_id }}
 
   run:
     needs: install
@@ -25,13 +25,13 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: node_modules
-          key: deps-${{ github.head_ref }}-${{ github.run_id }}
+          key: deps-${{ .Branch }}-${{ github.run_id }}
       - run: npm run build && npm start
       - name: cache output
         uses: actions/cache/save@v3
         with:
           path: dist
-          key: dist-${{ github.head_ref }}-${{ github.run_id }}
+          key: dist-${{ .Branch }}-${{ github.run_id }}
 
   verify:
     needs: run
@@ -44,10 +44,10 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: node_modules
-          key: deps-${{ github.head_ref }}-${{ github.run_id }}
+          key: deps-${{ .Branch }}-${{ github.run_id }}
       - name: restore output cache
         uses: actions/cache/restore@v3
         with:
           path: dist
-          key: dist-${{ github.head_ref }}-${{ github.run_id }}
+          key: dist-${{ .Branch }}-${{ github.run_id }}
       - run: npm run verify
