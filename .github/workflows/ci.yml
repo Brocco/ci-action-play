@@ -1,0 +1,29 @@
+name: Continuous Integration Playground
+run-name: ${{ github.actor }} pushed ${{ github.ref }}
+on: [push]
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install
+      - name: cache deps
+        uses: actions/cache/save@v3
+        id: deps_cache
+        with:
+          path: ~/node_modules
+          key: run-deps-${{ github.run_id }}
+
+  run:
+    needs: install
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: run-deps-${{ github.run_id }}
+      - run: npm run build && npm start
