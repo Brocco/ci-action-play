@@ -14,7 +14,7 @@ jobs:
       #     path: node_modules
       #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
       - name: cache
-        uses: actions/ci-action-play-2/cache
+        uses: brocco/ci-action-play-2/cache
         with:
           job: install
 
@@ -31,7 +31,7 @@ jobs:
       #     path: node_modules
       #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
       - name: uncache
-        uses: actions/ci-action-play-2/uncache
+        uses: brocco/ci-action-play-2/uncache
         with:
           from-job: install
       - run: npm run build && npm start
@@ -41,7 +41,7 @@ jobs:
       #     path: dist
       #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
       - name: cache
-        uses: actions/ci-action-play-2/cache
+        uses: brocco/ci-action-play-2/cache
         with:
           job: run
 
@@ -63,7 +63,7 @@ jobs:
       #     path: dist
       #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
       - name: uncache
-        uses: actions/ci-action-play-2/uncache
+        uses: brocco/ci-action-play-2/uncache
         with:
           from-job: run
       - run: npm run verify
