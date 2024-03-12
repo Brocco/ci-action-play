@@ -1,6 +1,8 @@
 name: Continuous Integration Playground
 # run-name: ${{ github.actor }} pushed ${{ github.ref_name }} - ${{ github.event.head_commit.message }}
 on: [push]
+env:
+  NODE_ENV: 14
 jobs:
   node-test:
     runs-on: ubuntu-latest
@@ -9,7 +11,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ env.NODE_ENV }}
 
       - name: Install
         run: node --version
