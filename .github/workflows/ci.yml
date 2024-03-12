@@ -1,69 +1,80 @@
 name: Continuous Integration Playground
-run-name: ${{ github.actor }} pushed ${{ github.ref_name }} - ${{ github.event.head_commit.message }}
+# run-name: ${{ github.actor }} pushed ${{ github.ref_name }} - ${{ github.event.head_commit.message }}
 on: [push]
 jobs:
-  install:
+  node-test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-      - run: npm install
-      # - name: cache deps
-      #   uses: actions/cache/save@v3
-      #   with:
-      #     path: node_modules
-      #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
-      - name: cache
-        uses: brocco/ci-action-play-2/cache@v1
+
+      - uses: actions/setup-node@v3
         with:
-          job: install
+          node-version: 18
 
-  run:
-    needs: install
+      - name: Install
+        run: node --version
+  # install:
+  #   runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - run: npm install
+  #     # - name: cache deps
+  #     #   uses: actions/cache/save@v3
+  #     #   with:
+  #     #     path: node_modules
+  #     #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
+  #     - name: cache
+  #       uses: brocco/ci-action-play-2/cache@v1
+  #       with:
+  #         job: install
 
-    steps:
-      # - uses: actions/checkout@v3
-      # - name: restore deps cache
-      #   uses: actions/cache/restore@v3
-      #   with:
-      #     path: node_modules
-      #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
-      - name: uncache
-        uses: brocco/ci-action-play-2/uncache@v1
-        with:
-          from-job: install
-      - run: npm run build && npm start
-      # - name: cache output
-      #   uses: actions/cache/save@v3
-      #   with:
-      #     path: dist
-      #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
-      - name: cache
-        uses: brocco/ci-action-play-2/cache@v1
-        with:
-          job: run
+  # run:
+  #   needs: install
 
-  verify:
-    needs: run
+  #   runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+  #   steps:
+  #     # - uses: actions/checkout@v3
+  #     # - name: restore deps cache
+  #     #   uses: actions/cache/restore@v3
+  #     #   with:
+  #     #     path: node_modules
+  #     #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
+  #     - name: uncache
+  #       uses: brocco/ci-action-play-2/uncache@v1
+  #       with:
+  #         from-job: install
+  #     - run: npm run build && npm start
+  #     # - name: cache output
+  #     #   uses: actions/cache/save@v3
+  #     #   with:
+  #     #     path: dist
+  #     #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
+  #     - name: cache
+  #       uses: brocco/ci-action-play-2/cache@v1
+  #       with:
+  #         job: run
 
-    steps:
-      # - uses: actions/checkout@v3
-      # - name: restore deps cache
-      #   uses: actions/cache/restore@v3
-      #   with:
-      #     path: node_modules
-      #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
-      # - name: restore output cache
-      #   uses: actions/cache/restore@v3
-      #   with:
-      #     path: dist
-      #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
-      - name: uncache
-        uses: brocco/ci-action-play-2/uncache@v1
-        with:
-          from-job: run
-      - run: npm run verify
+  # verify:
+  #   needs: run
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     # - uses: actions/checkout@v3
+  #     # - name: restore deps cache
+  #     #   uses: actions/cache/restore@v3
+  #     #   with:
+  #     #     path: node_modules
+  #     #     key: deps-${{ github.ref_name }}-${{ github.run_id }}
+  #     # - name: restore output cache
+  #     #   uses: actions/cache/restore@v3
+  #     #   with:
+  #     #     path: dist
+  #     #     key: dist-${{ github.ref_name }}-${{ github.run_id }}
+  #     - name: uncache
+  #       uses: brocco/ci-action-play-2/uncache@v1
+  #       with:
+  #         from-job: run
+  #     - run: npm run verify
